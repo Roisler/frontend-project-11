@@ -22,7 +22,9 @@
   },
   "homepage": "https://github.com/Roisler/frontend-project-11#readme",
   "devDependencies": {
+    "@popperjs/core": "^2.11.6",
     "@webpack-cli/generators": "^2.5.0",
+    "bootstrap": "^5.2.2",
     "eslint": "^8.26.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.26.0",
