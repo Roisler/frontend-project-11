@@ -35,6 +35,12 @@ const config = {
             // Learn more about loaders from https://webpack.js.org/loaders/
         ],
     },
+    plugins: [
+        new HtmlWebpackPlugin({
+            template: './index.html',
+            filename: './index.html',
+        })
+    ]
 };
 
 module.exports = () => {
