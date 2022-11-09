@@ -1,4 +1,4 @@
-import * as bootstrap from 'bootstrap'
+import * as bootstrap from 'bootstrap';
 import * as _ from 'lodash';
 import onChange from 'on-change';
 import * as yup from 'yup';
