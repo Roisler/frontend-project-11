@@ -3,6 +3,7 @@ import * as _ from 'lodash';
 import onChange from 'on-change';
 import * as yup from 'yup';
 import axios from 'axios';
+import schema from './validate';
 import { renderCards, renderErrors } from './view';
 import './scss/styles.scss';
 
@@ -32,15 +33,6 @@ const app = () => {
         renderCards(state, 'feeds');
       }
     }
-  });
-
-  const schema = yup.object().shape({
-    currentUrl: yup.string()
-      .notOneOf([yup.ref('posts')], 'Уже существует')
-      .url('Ссылка должна быть валидным URL')
-      .required('Обязательное поле!'),
-    posts: yup.array(),
-    feeds: yup.array(),
   });
 
   const input = document.querySelector('#url-input');
@@ -73,5 +65,4 @@ const app = () => {
     input.focus();
   });
 };
-
 app();
