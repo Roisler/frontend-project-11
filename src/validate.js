@@ -12,9 +12,10 @@ yup.setLocale({
 
 export default yup.object().shape({
   currentUrl: yup.string()
-    .notOneOf([yup.ref('posts')])
+    .notOneOf([yup.ref('urls')])
     .url()
     .required(),
-  posts: yup.array(),
+  urls: yup.array(),
   feeds: yup.array(),
+  posts: yup.array(),
 });
