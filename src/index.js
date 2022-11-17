@@ -21,6 +21,9 @@ const app = () => {
   };
 
   const state = onChange(initialState, (path, value) => {
+    if (path === 'data.posts') {
+      renderPosts(initialState);
+    }
     if (path === 'rssForm.status') {
       if (value === 'valid') {
         renderErrors(state.data.errors, value);
@@ -42,13 +45,18 @@ const app = () => {
     state.data.currentUrl = currentUrl;
     schema.validate(state.data)
       .then(() => {
-        getData(state, currentUrl, e);
+        getData(state, currentUrl, e, 'load');
       })
       .catch((err) => {
         state.data.errors = err;
         state.rssForm.status = 'invalid';
       });
     input.focus();
+    setInterval(() => {
+      state.data.urls.forEach((url) => {
+        getData(state, url, e);
+      });
+    }, 5000);
   });
 };
 

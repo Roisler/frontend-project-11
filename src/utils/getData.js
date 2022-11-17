@@ -9,17 +9,22 @@ const route = (url) => {
   return resultUrl.toString();
 };
 
-export default (state, path, e) => {
+export default (state, path, e, status = 'update') => {
   const initState = state;
   axios.get(route(path)).then((response) => {
     const doc = parser(response.data);
-    initState.data.urls.push(path);
+    if (!initState.data.urls.includes(path)) {
+      initState.data.urls.push(path);
+      initState.rssForm.status = 'valid';
+      e.target.reset();
+    }
     initState.data.errors = {};
-    initState.rssForm.status = 'valid';
-    e.target.reset();
-    extractFeedsAndPosts(doc, state);
+    extractFeedsAndPosts(doc, state, path);
   }).catch((error) => {
-    initState.data.errors = error;
-    initState.rssForm.status = 'invalid';
+    if (status !== 'update') {
+      initState.data.errors = error;
+      initState.rssForm.status = 'invalid';
+    }
+    console.error('Возникла ошибка при обновлении RSS потока. Проверьте наличие интернета');
   });
 };
