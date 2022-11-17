@@ -1,7 +1,8 @@
 import * as bootstrap from 'bootstrap';
 import onChange from 'on-change';
-import schema from './validate';
-import getData from './utils/getData';
+// import schema from './validate';
+// import getData from './utils/getData';
+import addHandlers from './utils/handlers';
 import { renderErrors, renderFeeds, renderPosts } from './view';
 import './scss/styles.scss';
 
@@ -37,7 +38,8 @@ const app = () => {
 
   const input = document.querySelector('#url-input');
   const form = document.querySelector('.rss-form');
-  form.addEventListener('submit', (e) => {
+  addHandlers(form, input, state);
+  /* form.addEventListener('submit', (e) => {
     e.preventDefault();
     state.rssForm.status = 'process';
     const formData = new FormData(form);
@@ -57,7 +59,7 @@ const app = () => {
         getData(state, url, e);
       });
     }, 5000);
-  });
+  }); */
 };
 
 app();
