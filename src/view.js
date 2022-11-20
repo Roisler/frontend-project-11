@@ -118,7 +118,11 @@ export const renderPosts = (state) => {
       link.dataset.id = post.id;
       link.setAttribute('rel', 'noopener noreferrer');
       link.setAttribute('target', '_blank');
-      link.classList.add('fw-bold');
+      if (post.viewed === false) {
+        link.classList.add('fw-bold');
+      } else {
+        link.classList.add('fw-normal', 'link-secondary');
+      }
       link.textContent = post.title;
 
       const button = document.createElement('button');
@@ -130,7 +134,7 @@ export const renderPosts = (state) => {
       button.textContent = i18next.t('view');
 
       li.append(link, button);
-      postsList.prepend(li);
+      postsList.append(li);
     });
     postsCard.append(postsList);
   });

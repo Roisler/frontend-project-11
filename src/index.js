@@ -2,7 +2,7 @@ import * as bootstrap from 'bootstrap';
 import onChange from 'on-change';
 // import schema from './validate';
 // import getData from './utils/getData';
-import addHandlers from './utils/handlers';
+import { formSubmit, modalClick } from './utils/handlers';
 import { renderErrors, renderFeeds, renderPosts } from './view';
 import './scss/styles.scss';
 
@@ -36,9 +36,10 @@ const app = () => {
     }
   });
 
-  const input = document.querySelector('#url-input');
-  const form = document.querySelector('.rss-form');
-  addHandlers(form, input, state);
+  // const input = document.querySelector('#url-input');
+  // const form = document.querySelector('.rss-form');
+  formSubmit(document, state);
+  modalClick(document, state);
   /* form.addEventListener('submit', (e) => {
     e.preventDefault();
     state.rssForm.status = 'process';

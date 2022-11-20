@@ -1,7 +1,10 @@
+import _ from 'lodash';
 import schema from '../validate';
 import getData from './getData';
 
-export default (form, input, state) => {
+export const formSubmit = (document, state) => {
+  const input = document.querySelector('#url-input');
+  const form = document.querySelector('.rss-form');
   const initState = state;
   form.addEventListener('submit', (e) => {
     e.preventDefault();
@@ -23,5 +26,33 @@ export default (form, input, state) => {
         getData(state, url, e);
       });
     }, 5000);
+  });
+};
+
+export const modalClick = (document, state) => {
+  const { posts } = state.data;
+
+  const modal = document.querySelector('#modal');
+  modal.addEventListener('show.bs.modal', (e) => {
+    const modalButton = e.relatedTarget;
+    const { id } = modalButton.dataset;
+
+    const selectedPost = _.find(posts, (post) => post.id === id);
+
+    const modalTitle = modal.querySelector('.modal-title');
+    modalTitle.textContent = selectedPost.title;
+
+    const modalBody = modal.querySelector('.modal-body');
+    modalBody.textContent = selectedPost.description;
+
+    const buttonFull = modal.querySelector('.full-article');
+    buttonFull.setAttribute('href', selectedPost.link);
+
+    posts.forEach((element) => {
+      const post = element;
+      if (post.id === id) {
+        post.viewed = true;
+      }
+    });
   });
 };
