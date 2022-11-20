@@ -1,0 +1,11 @@
+name: github-actions-js
+on: push
+jobs:
+  my-job:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: install eslint aibnb-base
+        run: npm install eslint-config-airbnb-base
+      - name: eslint
+        run: make lint
