@@ -27,6 +27,6 @@ export default (state, path, e, status = 'update') => {
       initState.rssForm.status = 'invalid';
       initState.rssForm.buttonDisabled = false;
     }
-    console.error('Возникла ошибка при обновлении RSS потока. Проверьте наличие интернета');
+    // console.error('Возникла ошибка при обновлении RSS потока. Проверьте наличие интернета');
   });
 };
