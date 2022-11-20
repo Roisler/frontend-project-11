@@ -1,4 +1,4 @@
-import * as bootstrap from 'bootstrap';
+import 'bootstrap';
 import onChange from 'on-change';
 import { formSubmit, modalClick } from './utils/handlers';
 import render from './view';
@@ -10,6 +10,7 @@ const app = () => {
       status: '',
       buttonDisabled: false,
     },
+    uiState: [],
     data: {
       currentUrl: '',
       urls: [],

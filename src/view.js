@@ -5,7 +5,7 @@ import renderErrors from './render/renderErrors';
 
 export default (state, path, value) => {
   switch (path) {
-    case 'data.posts':
+    case 'uiState' || 'data.posts':
       renderPosts(state, 'posts');
       break;
     case 'rssForm.buttonDisabled':

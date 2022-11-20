@@ -50,7 +50,7 @@ export const modalClick = (document, state) => {
     const buttonFull = modal.querySelector('.full-article');
     buttonFull.setAttribute('href', selectedPost.link);
 
-    posts.forEach((element) => {
+    state.uiState.forEach((element) => {
       const post = element;
       if (post.id === id) {
         post.viewed = true;

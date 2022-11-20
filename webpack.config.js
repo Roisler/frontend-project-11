@@ -20,7 +20,6 @@ const config = {
   plugins: [
     new HtmlWebpackPlugin({
       template: './index.html',
-      filename: './index.html',
     }),
 
     // Add your plugins here

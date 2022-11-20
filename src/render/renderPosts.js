@@ -1,6 +1,13 @@
 import i18next from 'i18next';
+import _ from 'lodash';
 import ru from '../locales/ru';
 import renderCards from './renderCards';
+
+const getPostUi = (state, id) => {
+  const uiPosts = state.uiState;
+  const statePostView = _.find(uiPosts, (uiPost) => uiPost.id === id);
+  return statePostView.viewed;
+};
 
 export default (state, item) => {
   i18next.init({
@@ -24,7 +31,8 @@ export default (state, item) => {
         link.dataset.id = post.id;
         link.setAttribute('rel', 'noopener noreferrer');
         link.setAttribute('target', '_blank');
-        if (post.viewed === false) {
+        const postView = getPostUi(state, post.id);
+        if (postView === false) {
           link.classList.add('fw-bold');
         } else {
           link.classList.add('fw-normal', 'link-secondary');

@@ -18,8 +18,8 @@ const extractPosts = (doc, state, feedId) => {
       title: title.textContent,
       description: description.textContent,
       link: link.textContent,
-      viewed: false,
     };
+    state.uiState.push({ id, viewed: false });
     state.data.posts.push(readyPost);
   });
 };
