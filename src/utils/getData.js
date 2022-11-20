@@ -16,6 +16,7 @@ export default (state, path, e, status = 'update') => {
     if (!initState.data.urls.includes(path)) {
       initState.data.urls.push(path);
       initState.rssForm.status = 'valid';
+      initState.rssForm.buttonDisabled = false;
       e.target.reset();
     }
     initState.data.errors = {};
@@ -24,6 +25,7 @@ export default (state, path, e, status = 'update') => {
     if (status !== 'update') {
       initState.data.errors = error;
       initState.rssForm.status = 'invalid';
+      initState.rssForm.buttonDisabled = false;
     }
     console.error('Возникла ошибка при обновлении RSS потока. Проверьте наличие интернета');
   });

@@ -9,6 +9,7 @@ export const formSubmit = (document, state) => {
   form.addEventListener('submit', (e) => {
     e.preventDefault();
     initState.rssForm.status = 'process';
+    initState.rssForm.buttonDisabled = true;
     const formData = new FormData(form);
     const currentUrl = formData.get('url');
     initState.data.currentUrl = currentUrl;
@@ -19,6 +20,7 @@ export const formSubmit = (document, state) => {
       .catch((err) => {
         initState.data.errors = err;
         initState.rssForm.status = 'invalid';
+        initState.rssForm.buttonDisabled = false;
       });
     input.focus();
     setInterval(() => {
