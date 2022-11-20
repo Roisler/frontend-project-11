@@ -3,16 +3,16 @@ import parser from '../parsers/parser';
 import extractFeedsAndPosts from '../parsers/extractFeedsAndPosts';
 
 const route = (url) => {
-  const resultUrl = new URL('https://allorigins.hexlet.app/raw');
+  const resultUrl = new URL('https://allorigins.hexlet.app/get');
   resultUrl.searchParams.set('disableCache', true);
   resultUrl.searchParams.set('url', url);
-  return resultUrl.toString();
+  return resultUrl;
 };
 
 export default (state, path, e, status = 'update') => {
   const initState = state;
   axios.get(route(path)).then((response) => {
-    const doc = parser(response.data);
+    const doc = parser(response.data.contents);
     if (!initState.data.urls.includes(path)) {
       initState.data.urls.push(path);
       initState.rssForm.status = 'valid';
