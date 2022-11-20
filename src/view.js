@@ -134,7 +134,7 @@ export const renderPosts = (state) => {
       button.textContent = i18next.t('view');
 
       li.append(link, button);
-      postsList.append(li);
+      postsList.prepend(li);
     });
     postsCard.append(postsList);
   });
