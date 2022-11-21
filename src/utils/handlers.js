@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import schema from '../validate';
 import getData from './getData';
+import renderModal from '../render/renderModal';
 
 export const formSubmit = (document, state) => {
   const input = document.querySelector('#url-input');
@@ -41,14 +42,7 @@ export const modalClick = (document, state) => {
 
     const selectedPost = _.find(posts, (post) => post.id === id);
 
-    const modalTitle = modal.querySelector('.modal-title');
-    modalTitle.textContent = selectedPost.title;
-
-    const modalBody = modal.querySelector('.modal-body');
-    modalBody.textContent = selectedPost.description;
-
-    const buttonFull = modal.querySelector('.full-article');
-    buttonFull.setAttribute('href', selectedPost.link);
+    renderModal(modal, selectedPost);
 
     state.uiState.forEach((element) => {
       const post = element;
