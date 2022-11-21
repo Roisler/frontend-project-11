@@ -8,14 +8,11 @@ RSS Agregator is used to aggregate and read data from RSS feeds. Add any number 
 [DEMO](https://frontend-project-11-u23c.vercel.app/)
 
 ### Instalation
-1. Clone the repository
+Clone the repository
 
 ```$ git clone https://github.com/Roisler/frontend-project-lvl2.git```
 
-2. Go to project directory
-
-
-3. Install RSS Aggregator
+Install RSS Aggregator
 
 ```$ make install```
 

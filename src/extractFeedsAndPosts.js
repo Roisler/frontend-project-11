@@ -16,11 +16,11 @@ const addPosts = (data, state, feedId) => {
   });
 };
 
-export default (data, state, path) => {
+export default (data, state) => {
   const newData = _.cloneDeep(data);
   const { feed } = newData;
   // проверяем, нет ли уже такого feed
-  const currentFeed = _.find(state.data.feeds, (el) => el.link === path);
+  const currentFeed = _.find(state.data.feeds, (el) => el.title === feed.title);
   if (currentFeed) {
     addPosts(data, state, currentFeed.id);
   } else {

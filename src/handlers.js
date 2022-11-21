@@ -24,11 +24,6 @@ export const formSubmit = (document, state) => {
         initState.rssForm.buttonDisabled = false;
       });
     input.focus();
-    setInterval(() => {
-      state.data.urls.forEach((url) => {
-        getData(state, url, e);
-      });
-    }, 5000);
   });
 };
 
