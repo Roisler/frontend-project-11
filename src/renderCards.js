@@ -1,5 +1,5 @@
 import i18n from 'i18next';
-import ru from '../locales/ru';
+import ru from './locales/ru';
 
 export default (state, item, itemList) => {
   i18n.init({

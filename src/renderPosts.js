@@ -1,6 +1,6 @@
 import i18next from 'i18next';
 import _ from 'lodash';
-import ru from '../locales/ru';
+import ru from './locales/ru';
 import renderCards from './renderCards';
 
 const getPostUi = (state, id) => {

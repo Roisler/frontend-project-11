@@ -1,10 +1,6 @@
 install:
 	npm ci
-publish:
-	npm publish --dry-run
+build:
+	npx webpack build
 lint:
 	npx eslint .
-test:
-	npx jest
-coverage:
-	npx jest --coverage

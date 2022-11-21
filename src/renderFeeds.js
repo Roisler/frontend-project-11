@@ -1,5 +1,5 @@
 import i18next from 'i18next';
-import ru from '../locales/ru';
+import ru from './locales/ru';
 import renderCards from './renderCards';
 
 export default (state, item) => {

@@ -1,8 +1,8 @@
 import 'bootstrap';
 import onChange from 'on-change';
-import { formSubmit, modalClick } from './utils/handlers';
+import { formSubmit, modalClick } from './handlers';
 import render from './view';
-import './scss/styles.scss';
+import './styles.scss';
 
 export default () => {
   const initialState = {

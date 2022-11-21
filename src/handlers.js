@@ -1,7 +1,7 @@
 import _ from 'lodash';
-import schema from '../validate';
+import schema from './validate';
 import getData from './getData';
-import renderModal from '../render/renderModal';
+import renderModal from './renderModal';
 
 export const formSubmit = (document, state) => {
   const input = document.querySelector('#url-input');

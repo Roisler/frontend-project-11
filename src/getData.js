@@ -1,6 +1,6 @@
 import axios from 'axios';
-import parser from '../parsers/parser';
-import extractFeedsAndPosts from '../parsers/extractFeedsAndPosts';
+import parser from './parser';
+import extractFeedsAndPosts from './extractFeedsAndPosts';
 
 const route = (url) => {
   const resultUrl = new URL('https://allorigins.hexlet.app/get');

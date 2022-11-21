@@ -1,7 +1,7 @@
-import renderForm from './render/renderForm';
-import renderPosts from './render/renderPosts';
-import renderFeeds from './render/renderFeeds';
-import renderErrors from './render/renderErrors';
+import renderForm from './renderForm';
+import renderPosts from './renderPosts';
+import renderFeeds from './renderFeeds';
+import renderErrors from './renderErrors';
 
 export default (state, path, value) => {
   switch (path) {
