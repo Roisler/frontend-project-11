@@ -1,47 +1,31 @@
 import _ from 'lodash';
 
-const extractPosts = (doc, state, feedId) => {
-  const channel = doc.querySelector('channel');
-  const posts = channel.querySelectorAll('item');
-  posts.forEach((post) => {
-    const title = post.querySelector('title');
-    const description = post.querySelector('description');
-    const link = post.querySelector('link');
-    const ma = state.data.posts.map((pos) => pos.link);
-    if (ma.includes(link.textContent)) {
+const addPosts = (data, state, feedId) => {
+  const newData = _.cloneDeep(data);
+  const { posts } = newData;
+  posts.forEach((el) => {
+    const post = el;
+    const currentPost = _.find(state.data.posts, (elem) => elem.link === post.link);
+    if (currentPost) {
       return;
     }
-    const id = _.uniqueId('post_');
-    const readyPost = {
-      id,
-      feedId,
-      title: title.textContent,
-      description: description.textContent,
-      link: link.textContent,
-    };
-    state.uiState.push({ id, viewed: false });
-    state.data.posts.push(readyPost);
+    post.id = _.uniqueId('post_');
+    post.feedId = feedId;
+    state.uiState.push({ id: post.id, viewed: false });
+    state.data.posts.push(post);
   });
 };
 
-export default (doc, state, path) => {
-  const channel = doc.querySelector('channel');
-  const title = channel.querySelector('title');
-  const description = channel.querySelector('description');
+export default (data, state, path) => {
+  const newData = _.cloneDeep(data);
+  const { feed } = newData;
   // проверяем, нет ли уже такого feed
-  const index = _.findIndex(state.data.feeds, (feed) => feed.link === path);
-  if (index !== -1) {
-    const { id } = state.data.feeds.filter((feed) => feed.link === path)[0]; // ищем текущий id feed
-    extractPosts(doc, state, id);
+  const currentFeed = _.find(state.data.feeds, (el) => el.link === path);
+  if (currentFeed) {
+    addPosts(data, state, currentFeed.id);
   } else {
-    const id = state.data.feeds.length + 1;
-    const feed = {
-      id,
-      link: path,
-      title: title.textContent,
-      description: description.textContent,
-    };
+    feed.id = state.data.feeds.length + 1;
     state.data.feeds.push(feed);
-    extractPosts(doc, state, id);
+    addPosts(data, state, feed.id);
   }
 };

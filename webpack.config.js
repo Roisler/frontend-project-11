@@ -4,6 +4,7 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const WorkboxWebpackPlugin = require('workbox-webpack-plugin');
 const autoprefixer = require('autoprefixer');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const isProduction = process.env.NODE_ENV === 'production';
 
@@ -24,6 +25,7 @@ const config = {
     new HtmlWebpackPlugin({
       template: './index.html',
     }),
+    new MiniCssExtractPlugin(),
 
     // Add your plugins here
     // Learn more about plugins from https://webpack.js.org/configuration/plugins/
@@ -35,14 +37,10 @@ const config = {
         type: 'asset',
       },
       {
-        test: /\.(scss)$/,
+        test: /\.scss$/i,
         use: [
-          {
-            loader: 'style-loader',
-          },
-          {
-            loader: 'css-loader',
-          },
+          { loader: MiniCssExtractPlugin.loader },
+          { loader: 'css-loader' },
           {
             loader: 'postcss-loader',
             options: {

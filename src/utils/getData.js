@@ -12,7 +12,7 @@ const route = (url) => {
 export default (state, path, e, status = 'update') => {
   const initState = state;
   axios.get(route(path)).then((response) => {
-    const doc = parser(response.data.contents);
+    const data = parser(response.data.contents);
     if (!initState.data.urls.includes(path)) {
       initState.data.urls.push(path);
       initState.rssForm.status = 'valid';
@@ -20,7 +20,7 @@ export default (state, path, e, status = 'update') => {
       e.target.reset();
     }
     initState.data.errors = {};
-    extractFeedsAndPosts(doc, state, path);
+    extractFeedsAndPosts(data, state, path);
   }).catch((error) => {
     if (status !== 'update') {
       initState.data.errors = error;
