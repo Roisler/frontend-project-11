@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import schema from './validate';
-import getData from './getData';
+import { getData } from './getData';
 import renderModal from './renderModal';
 
 export const formSubmit = (document, state) => {

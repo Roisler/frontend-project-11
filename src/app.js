@@ -2,6 +2,7 @@ import 'bootstrap';
 import onChange from 'on-change';
 import { formSubmit, modalClick } from './handlers';
 import render from './view';
+import { updatePosts } from './getData';
 import './styles.scss';
 
 export default () => {
@@ -23,6 +24,8 @@ export default () => {
   const state = onChange(initialState, (path, value) => {
     render(initialState, path, value);
   });
+
+  setInterval(() => updatePosts(state), 5000);
 
   formSubmit(document, state);
   modalClick(document, state);
