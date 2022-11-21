@@ -10,7 +10,7 @@ RSS Agregator is used to aggregate and read data from RSS feeds. Add any number 
 ### Instalation
 Clone the repository
 
-```$ git clone https://github.com/Roisler/frontend-project-lvl2.git```
+```$ git clone https://github.com/Roisler/frontend-project-11.git```
 
 Install RSS Aggregator
 
