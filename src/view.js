@@ -5,20 +5,20 @@ const getPostUi = (state, id) => {
   return uiPosts.includes(id);
 };
 
-const renderCards = (item, itemList, newElements, i18n) => {
+const renderCards = (item, itemList, newElements, i18nInstance) => {
   const elements = newElements(item);
 
   elements.card.classList.add('card', 'border-0');
   elements.cardBody.classList.add('card-body');
   elements.header.classList.add('card-title', 'h4');
-  elements.header.textContent = i18n.t(`cards.${item}`);
+  elements.header.textContent = i18nInstance.t(`cards.${item}`);
   elements.cardBody.append(elements.header);
   elements.card.append(elements.cardBody);
   elements.container.replaceChildren(elements.card);
   elements.card.append(itemList);
 };
 
-const renderPosts = (state, newElements, i18n) => {
+const renderPosts = (state, newElements, i18nInstance) => {
   const { posts } = state.data;
 
   const postsList = document.createElement('ul');
@@ -47,15 +47,15 @@ const renderPosts = (state, newElements, i18n) => {
     button.dataset.id = post.id;
     button.setAttribute('data-bs-toggle', 'modal');
     button.classList.add('btn', 'btn-outline-primary', 'btn-sm');
-    button.textContent = i18n.t('view');
+    button.textContent = i18nInstance.t('view');
 
     li.append(link, button);
     postsList.prepend(li);
   });
-  renderCards('posts', postsList, newElements, i18n);
+  renderCards('posts', postsList, newElements, i18nInstance);
 };
 
-const renderFeeds = (state, newElements, i18n) => {
+const renderFeeds = (state, newElements, i18nInstance) => {
   const { feeds } = state.data;
 
   const feedsList = document.createElement('ul');
@@ -76,7 +76,7 @@ const renderFeeds = (state, newElements, i18n) => {
     elements.li.append(elements.title, elements.description);
     feedsList.prepend(elements.li);
   });
-  renderCards('feeds', feedsList, newElements, i18n);
+  renderCards('feeds', feedsList, newElements, i18nInstance);
 };
 
 const renderForm = (value) => {
@@ -89,11 +89,11 @@ const renderForm = (value) => {
   }
 };
 
-const renderErrors = (errors, value, i18n) => {
+const renderErrors = (errors, value, i18nInstance) => {
   const feedback = document.querySelector('.feedback');
   const input = document.querySelector('#url-input');
   if (value === 'valid') {
-    feedback.textContent = i18n.t('success_load');
+    feedback.textContent = i18nInstance.t('success_load');
     input.classList.remove('is-invalid');
     feedback.classList.remove('text-danger');
     feedback.classList.add('text-success');
@@ -103,7 +103,7 @@ const renderErrors = (errors, value, i18n) => {
   } else {
     input.classList.add('is-invalid');
     feedback.classList.add('text-danger');
-    feedback.textContent = errors.message === 'Network Error' ? i18n.t('errors.network_error') : i18n.t(errors.message);
+    feedback.textContent = errors.message === 'Network Error' ? i18nInstance.t('errors.network_error') : i18nInstance.t(errors.message);
   }
 };
 
@@ -121,13 +121,13 @@ const renderModal = (state, id) => {
   buttonFull.setAttribute('href', currentPost.link);
 };
 
-export default (state, path, value, newElements, i18n) => {
+export default (state, path, value, newElements, i18nInstance) => {
   switch (path) {
     case 'ui.seenPosts':
-      renderPosts(state, newElements, i18n);
+      renderPosts(state, newElements, i18nInstance);
       break;
     case 'data.posts':
-      renderPosts(state, newElements, i18n);
+      renderPosts(state, newElements, i18nInstance);
       break;
     case 'rssForm.buttonDisabled':
       renderForm(value);
@@ -137,11 +137,11 @@ export default (state, path, value, newElements, i18n) => {
       break;
     case 'rssForm.status':
       if (value === 'valid') {
-        renderErrors(state.data.errors, value, i18n);
-        renderFeeds(state, newElements, i18n);
-        renderPosts(state, newElements, i18n);
+        renderErrors(state.data.errors, value, i18nInstance);
+        renderFeeds(state, newElements, i18nInstance);
+        renderPosts(state, newElements, i18nInstance);
       } else {
-        renderErrors(state.data.errors, value, i18n);
+        renderErrors(state.data.errors, value, i18nInstance);
       }
       break;
     default:
