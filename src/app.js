@@ -1,4 +1,5 @@
 import 'bootstrap';
+import 'bootstrap/scss/bootstrap.scss';
 import _ from 'lodash';
 import axios from 'axios';
 import * as yup from 'yup';
@@ -7,7 +8,6 @@ import i18n from 'i18next';
 import watch from './view';
 import ru from './locales/ru';
 import parser from './parser';
-import 'bootstrap/scss/bootstrap.scss';
 
 const route = (url) => {
   const resultUrl = new URL('https://allorigins.hexlet.app/get');
