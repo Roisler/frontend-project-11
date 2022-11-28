@@ -1,13 +1,11 @@
-import i18n from 'i18next';
 import _ from 'lodash';
 
 const getPostUi = (state, id) => {
-  const uiPosts = state.uiState.posts;
-  const statePostView = _.find(uiPosts, (uiPost) => uiPost.id === id);
-  return statePostView.viewed;
+  const uiPosts = state.ui.seenPosts;
+  return uiPosts.includes(id);
 };
 
-const renderCards = (item, itemList, newElements) => {
+const renderCards = (item, itemList, newElements, i18n) => {
   const elements = newElements(item);
 
   elements.card.classList.add('card', 'border-0');
@@ -20,7 +18,7 @@ const renderCards = (item, itemList, newElements) => {
   elements.card.append(itemList);
 };
 
-const renderPosts = (state, newElements) => {
+const renderPosts = (state, newElements, i18n) => {
   const { posts } = state.data;
 
   const postsList = document.createElement('ul');
@@ -54,10 +52,10 @@ const renderPosts = (state, newElements) => {
     li.append(link, button);
     postsList.prepend(li);
   });
-  renderCards('posts', postsList, newElements);
+  renderCards('posts', postsList, newElements, i18n);
 };
 
-const renderFeeds = (state, newElements) => {
+const renderFeeds = (state, newElements, i18n) => {
   const { feeds } = state.data;
 
   const feedsList = document.createElement('ul');
@@ -78,7 +76,7 @@ const renderFeeds = (state, newElements) => {
     elements.li.append(elements.title, elements.description);
     feedsList.prepend(elements.li);
   });
-  renderCards('feeds', feedsList, newElements);
+  renderCards('feeds', feedsList, newElements, i18n);
 };
 
 const renderForm = (value) => {
@@ -91,7 +89,7 @@ const renderForm = (value) => {
   }
 };
 
-const renderErrors = (errors, value) => {
+const renderErrors = (errors, value, i18n) => {
   const feedback = document.querySelector('.feedback');
   const input = document.querySelector('#url-input');
   if (value === 'valid') {
@@ -123,24 +121,27 @@ const renderModal = (state, id) => {
   buttonFull.setAttribute('href', currentPost.link);
 };
 
-export default (state, path, value, newElements) => {
+export default (state, path, value, newElements, i18n) => {
   switch (path) {
-    case 'uiState.posts' || 'data.posts':
-      renderPosts(state, newElements);
+    case 'ui.seenPosts':
+      renderPosts(state, newElements, i18n);
+      break;
+    case 'data.posts':
+      renderPosts(state, newElements, i18n);
       break;
     case 'rssForm.buttonDisabled':
       renderForm(value);
       break;
-    case 'uiState.modal':
+    case 'ui.modal':
       renderModal(state, value);
       break;
     case 'rssForm.status':
       if (value === 'valid') {
-        renderErrors(state.data.errors, value);
-        renderFeeds(state, newElements);
-        renderPosts(state, newElements);
+        renderErrors(state.data.errors, value, i18n);
+        renderFeeds(state, newElements, i18n);
+        renderPosts(state, newElements, i18n);
       } else {
-        renderErrors(state.data.errors, value);
+        renderErrors(state.data.errors, value, i18n);
       }
       break;
     default:

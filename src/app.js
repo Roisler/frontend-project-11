@@ -7,7 +7,7 @@ import i18n from 'i18next';
 import watch from './view';
 import ru from './locales/ru';
 import parser from './parser';
-import './styles.scss';
+import 'bootstrap/scss/bootstrap.scss';
 
 const route = (url) => {
   const resultUrl = new URL('https://allorigins.hexlet.app/get');
@@ -50,7 +50,6 @@ const extractPosts = (data, state, feedId) => {
     }
     post.id = _.uniqueId('post_');
     post.feedId = feedId;
-    state.uiState.posts.push({ id: post.id, viewed: false });
     state.data.posts.push(post);
   });
 };
@@ -58,7 +57,6 @@ const extractPosts = (data, state, feedId) => {
 const extractFeeds = (data, state) => {
   const newData = _.cloneDeep(data);
   const { feed } = newData;
-  // проверяем, нет ли уже такого feed
   const currentFeed = _.find(state.data.feeds, (el) => el.title === feed.title);
   if (currentFeed) {
     extractPosts(data, state, currentFeed.id);
@@ -71,15 +69,10 @@ const extractFeeds = (data, state) => {
 
 const updatePosts = (state) => {
   const { urls } = state.data;
-  if (urls.length === 0) {
-    setTimeout(() => updatePosts(state), 5000);
-    return;
-  }
   Promise.all(urls.map((url) => axios.get(route(url)).then((response) => {
     const data = parser(response.data.contents);
     extractFeeds(data, state);
-  }))).then(() => setTimeout(() => updatePosts(state), 5000))
-    .catch(() => setTimeout(() => updatePosts(state), 5000));
+  }))).finally(() => setTimeout(() => updatePosts(state), 5000));
 };
 
 const getData = (state, path, e) => {
@@ -99,25 +92,22 @@ const getData = (state, path, e) => {
   });
 };
 
-const modalClick = (document, state) => {
-  const { uiState } = state;
+const postClick = (document, state) => {
+  const { ui } = state;
   const { posts } = state.data;
 
-  const modal = document.querySelector('#modal');
-  modal.addEventListener('show.bs.modal', (e) => {
-    const modalButton = e.relatedTarget;
-    const { id } = modalButton.dataset;
+  const postsContainer = document.querySelector('.posts');
+  postsContainer.addEventListener('click', (e) => {
+    if (e.target.dataset.id) {
+      const { id } = e.target.dataset;
+      const selectedPost = _.find(posts, (post) => post.id === id);
 
-    const selectedPost = _.find(posts, (post) => post.id === id);
+      ui.modal = selectedPost.id;
 
-    uiState.modal = selectedPost.id;
-
-    uiState.posts.forEach((element) => {
-      const post = element;
-      if (post.id === id) {
-        post.viewed = true;
+      if (!ui.seenPosts.includes(selectedPost.id)) {
+        ui.seenPosts.push(selectedPost.id);
       }
-    });
+    }
   });
 };
 
@@ -158,9 +148,9 @@ export default () => {
           status: '',
           buttonDisabled: false,
         },
-        uiState: {
+        ui: {
           modal: '',
-          posts: [],
+          seenPosts: [],
         },
         data: {
           currentUrl: '',
@@ -181,12 +171,20 @@ export default () => {
         return elements;
       };
 
+      const i18nInstance = i18n.createInstance();
+      i18nInstance.init({
+        lng: 'ru',
+        resources: {
+          ru,
+        },
+      });
+
       const state = onChange(initialState, (path, value) => {
-        watch(initialState, path, value, newElements);
+        watch(initialState, path, value, newElements, i18nInstance);
       });
       setTimeout(() => updatePosts(state), 5000);
       formSubmit(document, state);
-      modalClick(document, state);
+      postClick(document, state);
     };
     app(i18n);
   });
