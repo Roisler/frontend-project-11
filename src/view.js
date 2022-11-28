@@ -103,7 +103,14 @@ const renderErrors = (errors, value, i18nInstance) => {
   } else {
     input.classList.add('is-invalid');
     feedback.classList.add('text-danger');
-    feedback.textContent = errors.message === 'Network Error' ? i18nInstance.t('errors.network_error') : i18nInstance.t(errors.message);
+    switch (errors.message) {
+      case 'Network Error':
+        feedback.textContent = i18nInstance.t('errors.network_error');
+        break;
+      default:
+        feedback.textContent = i18nInstance.t([errors.message, 'errors.unspecific']);
+        break;
+    }
   }
 };
 
