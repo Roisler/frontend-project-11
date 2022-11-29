@@ -158,6 +158,7 @@ export default () => {
         postsContainer: document.querySelector('.posts'),
         input: document.querySelector('#url-input'),
         form: document.querySelector('.rss-form'),
+        submit: document.querySelector('[type="submit"]'),
         feedback: document.querySelector('.feedback'),
         modal: document.querySelector('#modal'),
         modalTitle: document.querySelector('.modal-title'),

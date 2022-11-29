@@ -89,7 +89,7 @@ const renderFeeds = (state, feedsElements, i18nInstance) => {
 };
 
 const renderForm = (elements, value) => {
-  const submit = elements.form.querySelector('[type="submit"]');
+  const { submit } = elements;
 
   if (value === true) {
     submit.setAttribute('disabled', 'disabled');
