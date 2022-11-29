@@ -5,8 +5,17 @@ const getPostUi = (state, id) => {
   return uiPosts.includes(id);
 };
 
-const renderCards = (item, itemList, newElements, i18nInstance) => {
-  const elements = newElements(item);
+const renderCards = (item, itemList, cardElements, i18nInstance) => {
+  const elements = _.cloneDeep(cardElements);
+
+  const mapping = {
+    feeds: elements.feedsContainer,
+    posts: elements.postsContainer,
+  };
+
+  elements.card = document.createElement('div');
+  elements.cardBody = document.createElement('div');
+  elements.header = document.createElement('h2');
 
   elements.card.classList.add('card', 'border-0');
   elements.cardBody.classList.add('card-body');
@@ -14,11 +23,11 @@ const renderCards = (item, itemList, newElements, i18nInstance) => {
   elements.header.textContent = i18nInstance.t(`cards.${item}`);
   elements.cardBody.append(elements.header);
   elements.card.append(elements.cardBody);
-  elements.container.replaceChildren(elements.card);
+  mapping[item].replaceChildren(elements.card);
   elements.card.append(itemList);
 };
 
-const renderPosts = (state, newElements, i18nInstance) => {
+const renderPosts = (state, postsElements, i18nInstance) => {
   const { posts } = state.data;
 
   const postsList = document.createElement('ul');
@@ -52,10 +61,10 @@ const renderPosts = (state, newElements, i18nInstance) => {
     li.append(link, button);
     postsList.prepend(li);
   });
-  renderCards('posts', postsList, newElements, i18nInstance);
+  renderCards('posts', postsList, postsElements, i18nInstance);
 };
 
-const renderFeeds = (state, newElements, i18nInstance) => {
+const renderFeeds = (state, feedsElements, i18nInstance) => {
   const { feeds } = state.data;
 
   const feedsList = document.createElement('ul');
@@ -76,12 +85,12 @@ const renderFeeds = (state, newElements, i18nInstance) => {
     elements.li.append(elements.title, elements.description);
     feedsList.prepend(elements.li);
   });
-  renderCards('feeds', feedsList, newElements, i18nInstance);
+  renderCards('feeds', feedsList, feedsElements, i18nInstance);
 };
 
-const renderForm = (value) => {
-  const form = document.querySelector('form');
-  const submit = form.querySelector('[type="submit"]');
+const renderForm = (elements, value) => {
+  const submit = elements.form.querySelector('[type="submit"]');
+
   if (value === true) {
     submit.setAttribute('disabled', 'disabled');
   } else {
@@ -89,9 +98,9 @@ const renderForm = (value) => {
   }
 };
 
-const renderErrors = (errors, value, i18nInstance) => {
-  const feedback = document.querySelector('.feedback');
-  const input = document.querySelector('#url-input');
+const renderError = (error, value, elements, i18nInstance) => {
+  const { feedback, input } = elements;
+
   if (value === 'valid') {
     feedback.textContent = i18nInstance.t('success_load');
     input.classList.remove('is-invalid');
@@ -103,52 +112,50 @@ const renderErrors = (errors, value, i18nInstance) => {
   } else {
     input.classList.add('is-invalid');
     feedback.classList.add('text-danger');
-    switch (errors.message) {
+    switch (error.message) {
       case 'Network Error':
         feedback.textContent = i18nInstance.t('errors.network_error');
         break;
       default:
-        feedback.textContent = i18nInstance.t([errors.message, 'errors.unspecific']);
+        feedback.textContent = i18nInstance.t([error.message, 'errors.unspecific']);
         break;
     }
   }
 };
 
-const renderModal = (state, id) => {
+const renderModal = (state, id, elements) => {
   const { posts } = state.data;
   const currentPost = _.find(posts, (post) => post.id === id);
-  const modal = document.querySelector('#modal');
-  const modalTitle = modal.querySelector('.modal-title');
+  const { modalTitle, modalBody, modalButtonFullRead } = elements;
+
   modalTitle.textContent = currentPost.title;
 
-  const modalBody = modal.querySelector('.modal-body');
   modalBody.textContent = currentPost.description;
 
-  const buttonFull = modal.querySelector('.full-article');
-  buttonFull.setAttribute('href', currentPost.link);
+  modalButtonFullRead.setAttribute('href', currentPost.link);
 };
 
-export default (state, path, value, newElements, i18nInstance) => {
+export default (state, path, value, elements, i18nInstance) => {
   switch (path) {
     case 'ui.seenPosts':
-      renderPosts(state, newElements, i18nInstance);
+      renderPosts(state, elements, i18nInstance);
       break;
     case 'data.posts':
-      renderPosts(state, newElements, i18nInstance);
+      renderPosts(state, elements, i18nInstance);
       break;
     case 'rssForm.buttonDisabled':
-      renderForm(value);
+      renderForm(elements, value);
       break;
     case 'ui.modal':
-      renderModal(state, value);
+      renderModal(state, value, elements);
       break;
     case 'rssForm.status':
       if (value === 'valid') {
-        renderErrors(state.data.errors, value, i18nInstance);
-        renderFeeds(state, newElements, i18nInstance);
-        renderPosts(state, newElements, i18nInstance);
+        renderError(state.data.error, value, elements, i18nInstance);
+        renderFeeds(state, elements, i18nInstance);
+        renderPosts(state, elements, i18nInstance);
       } else {
-        renderErrors(state.data.errors, value, i18nInstance);
+        renderError(state.data.error, value, elements, i18nInstance);
       }
       break;
     default:
