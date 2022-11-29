@@ -136,43 +136,40 @@ export default () => {
       ru,
     },
   }).then(() => {
-    const app = () => {
-      const initialState = {
-        rssForm: {
-          status: '',
-          buttonDisabled: false,
-        },
-        ui: {
-          modal: '',
-          seenPosts: [],
-        },
-        data: {
-          feeds: [],
-          posts: [],
-          error: {},
-        },
-      };
-
-      const elements = {
-        feedsContainer: document.querySelector('.feeds'),
-        postsContainer: document.querySelector('.posts'),
-        input: document.querySelector('#url-input'),
-        form: document.querySelector('.rss-form'),
-        submit: document.querySelector('[type="submit"]'),
-        feedback: document.querySelector('.feedback'),
-        modal: document.querySelector('#modal'),
-        modalTitle: document.querySelector('.modal-title'),
-        modalBody: document.querySelector('.modal-body'),
-        modalButtonFullRead: document.querySelector('.full-article'),
-      };
-
-      const state = onChange(initialState, (path, value) => {
-        watch(initialState, path, value, elements, i18nInstance);
-      });
-      setTimeout(() => updatePosts(state), 5000);
-      formSubmit(elements, state);
-      postClick(elements, state);
+    const initialState = {
+      rssForm: {
+        status: '',
+        buttonDisabled: false,
+      },
+      ui: {
+        modal: '',
+        seenPosts: [],
+      },
+      data: {
+        feeds: [],
+        posts: [],
+        error: {},
+      },
     };
-    app(i18nInstance);
+
+    const elements = {
+      feedsContainer: document.querySelector('.feeds'),
+      postsContainer: document.querySelector('.posts'),
+      input: document.querySelector('#url-input'),
+      form: document.querySelector('.rss-form'),
+      submit: document.querySelector('[type="submit"]'),
+      feedback: document.querySelector('.feedback'),
+      modal: document.querySelector('#modal'),
+      modalTitle: document.querySelector('.modal-title'),
+      modalBody: document.querySelector('.modal-body'),
+      modalButtonFullRead: document.querySelector('.full-article'),
+    };
+
+    const state = onChange(initialState, (path, value) => {
+      watch(initialState, path, value, elements, i18nInstance);
+    });
+    setTimeout(() => updatePosts(state), 5000);
+    formSubmit(elements, state);
+    postClick(elements, state);
   });
 };
