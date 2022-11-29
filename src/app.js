@@ -172,6 +172,6 @@ export default () => {
       formSubmit(elements, state);
       postClick(elements, state);
     };
-    app(i18n);
+    app(i18nInstance);
   });
 };
