@@ -57,7 +57,7 @@ const extractFeeds = (data, url, state) => {
     extractPosts(data, state, currentFeed.id);
   } else {
     feed.url = url;
-    feed.id = state.data.feeds.length + 1;
+    feed.id = _.uniqueId('feed_');
     state.data.feeds.push(feed);
     extractPosts(data, state, feed.id);
   }
@@ -77,13 +77,13 @@ const updatePosts = (state) => {
 };
 
 const getData = (state, path, e) => {
-  const initState = state;
+  const { data, rssForm } = state;
   return axios.get(route(path)).then((response) => {
-    const data = parser(response.data.contents);
-    extractFeeds(data, path, state);
-    initState.data.error = {};
-    initState.rssForm.status = 'valid';
-    initState.rssForm.buttonDisabled = false;
+    const parsedData = parser(response.data.contents);
+    extractFeeds(parsedData, path, state);
+    data.error = {};
+    rssForm.status = 'valid';
+    rssForm.buttonDisabled = false;
     e.target.reset();
   });
 };
@@ -107,13 +107,13 @@ const postClick = (elements, state) => {
 };
 
 const formSubmit = (elements, state) => {
-  const initState = state;
+  const { data, rssForm } = state;
   const { input, form } = elements;
 
   form.addEventListener('submit', (e) => {
     e.preventDefault();
-    initState.rssForm.status = 'process';
-    initState.rssForm.buttonDisabled = true;
+    rssForm.status = 'process';
+    rssForm.buttonDisabled = true;
     const formData = new FormData(form);
     const currentUrl = formData.get('url');
     const urls = state.data.feeds.map((feed) => feed.url);
@@ -121,9 +121,9 @@ const formSubmit = (elements, state) => {
     return validate(currentUrl, urls)
       .then(() => getData(state, currentUrl, e))
       .catch((err) => {
-        initState.data.error = err;
-        initState.rssForm.status = 'invalid';
-        initState.rssForm.buttonDisabled = false;
+        data.error = err;
+        rssForm.status = 'invalid';
+        rssForm.buttonDisabled = false;
       });
   });
 };
