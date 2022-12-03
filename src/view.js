@@ -1,10 +1,5 @@
 import _ from 'lodash';
 
-const isViewed = (state, id) => {
-  const { seenPosts } = state.ui;
-  return seenPosts.includes(id);
-};
-
 const renderCards = (item, itemList, cardElements, i18nInstance) => {
   const elements = _.cloneDeep(cardElements);
 
@@ -42,11 +37,10 @@ const renderPosts = (state, postsElements, i18nInstance) => {
     link.dataset.id = post.id;
     link.setAttribute('rel', 'noopener noreferrer');
     link.setAttribute('target', '_blank');
-    const postView = isViewed(state, post.id);
-    if (postView === false) {
-      link.classList.add('fw-bold');
-    } else {
+    if (state.ui.seenPosts.includes(post.id)) {
       link.classList.add('fw-normal', 'link-secondary');
+    } else {
+      link.classList.add('fw-bold');
     }
     link.textContent = post.title;
 
